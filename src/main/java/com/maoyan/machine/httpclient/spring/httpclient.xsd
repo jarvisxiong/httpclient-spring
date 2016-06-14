@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://machine.maoyan.com/schema/httpclient"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://machine.maoyan.com/schema/httpclient"
+  elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+  <xsd:element name="http-api-scan">
+    <xsd:complexType>
+    	<xsd:sequence>
+      		<xsd:element name="entity-converters" minOccurs="0" maxOccurs="1">
+      			<xsd:complexType>
+      				<xsd:sequence>
+      					<xsd:element name="entity-converter" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+      				</xsd:sequence>
+      			</xsd:complexType>
+      		</xsd:element>
+      		<xsd:element name="interceptors" minOccurs="0" maxOccurs="1">
+      			<xsd:complexType>
+      				<xsd:sequence>
+      					<xsd:element name="interceptor"  minOccurs="0" maxOccurs="unbounded">
+      						<xsd:complexType>
+      							<xsd:attribute name="order" type="xsd:int"/>
+     							<xsd:attribute name="beanName" type="xsd:string"/>
+      						</xsd:complexType>
+      					</xsd:element>
+      				</xsd:sequence>
+      			</xsd:complexType>
+      		</xsd:element>
+    	</xsd:sequence>
+      	<xsd:attribute name="package" type="xsd:string"
+       		 use="required">
+      	</xsd:attribute>
+      	<xsd:attribute name="socketTimeout" type="xsd:int"/>
+     	<xsd:attribute name="maxTotalConnection" type="xsd:int"/>
+      	<xsd:attribute name="defaultMaxPerRoute" type="xsd:int"/>
+      	<xsd:attribute name="connectTimeout" type="xsd:int"/>
+      	<xsd:attribute name="baseUrl" type="xsd:string"/>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>
