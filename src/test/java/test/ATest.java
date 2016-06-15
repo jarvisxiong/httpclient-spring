@@ -23,6 +23,7 @@ public class ATest extends AbstractTest {
         req.setId(2);
         Resp test = testApi.test(req);
         Resp test2 = testApi.test(req);
+        
         System.err.println(test.getS());
     }
 }
