@@ -61,24 +61,23 @@ public class HttpClientInvocationHandler implements InvocationHandler {
     }
 
     @Override
-    public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
+    public Object invoke(final Object proxy, final Method method, final Object[] args) throws Exception {
         List<HttpApiInterceptor> interceptors = metasManager.getApiMeta(method).getInterceptors();
         if (interceptors == null || interceptors.size() == 0) {
             return this.invoke0(proxy, method, args);
         }
 
-        return new Invocation(interceptors) {
+        return new Invocation(interceptors, method, args[0]) {
 
             @Override
-            protected Object invoke() throws Throwable {
-                return invoke0(proxy, method, args);
+            protected Object invoke() throws Exception {
+                return invoke0(proxy, this.method, this.request);
             }
 
         }.proceed();
     }
 
-    public Object invoke0(Object proxy, Method method, Object[] args) throws Throwable {
-        Object request = args[0];
+    private Object invoke0(Object proxy, Method method, Object request) throws Exception {
         HttpApiMeta meta = this.metasManager.getApiMeta(method);
         RequestParser requestParser = new RequestParser(request, meta.getRequestModelMeta());
         Map<String, String> headers = requestParser.getHeaders();
@@ -126,7 +125,7 @@ public class HttpClientInvocationHandler implements InvocationHandler {
     }
 
     private String getQueryString(Object requestModel) throws IllegalArgumentException, IllegalAccessException, UnsupportedEncodingException {
-        List<Field> allField = ReflectUtils.getAllField(requestModel.getClass());
+        List<Field> allField = ReflectUtils.getEntityFields(requestModel.getClass());
         StringBuilder sbBuilder = new StringBuilder();
         sbBuilder.append("?");
         for (Field field : allField) {
@@ -213,17 +212,27 @@ public class HttpClientInvocationHandler implements InvocationHandler {
         private final Map<String, String> pathVariables;
         private final Object body;
 
-        private RequestParser(Object request, ModelMeta requestModelMeta) throws IllegalArgumentException, IllegalAccessException {
-            this.headers = this.getAndRemoveHead(request, requestModelMeta);
-            this.pathVariables = this.getAndRemovePathVariable(request, requestModelMeta);
+        private RequestParser(Object request, ModelMeta requestModelMeta) throws IllegalArgumentException, IllegalAccessException, InstantiationException {
+            this.headers = this.getHead(request, requestModelMeta);
+            this.pathVariables = this.getPathVariable(request, requestModelMeta);
             if (requestModelMeta.getBodyField() != null) {
                 this.body = requestModelMeta.getBodyField().get(request);
             } else {
-                this.body = request;
+                this.body = this.copyEntityField(request);
             }
         }
+        
+        private Object copyEntityField(Object requestModel) throws InstantiationException, IllegalAccessException{
+            Object result = requestModel.getClass().newInstance();
+            List<Field> entityFields = ReflectUtils.getEntityFields(requestModel.getClass());
+            for (Field field : entityFields) {
+                field.set(result, field.get(requestModel));
+            }
+            
+            return result;
+        }
 
-        private Map<String, String> getAndRemoveHead(Object request, ModelMeta modelMeta) throws IllegalArgumentException, IllegalAccessException {
+        private Map<String, String> getHead(Object request, ModelMeta modelMeta) throws IllegalArgumentException, IllegalAccessException {
             Map<String, String> result = new HashMap<>();
             List<Field> headerFields = modelMeta.getHeaderFields();
             for (Field field : headerFields) {
@@ -231,13 +240,12 @@ public class HttpClientInvocationHandler implements InvocationHandler {
                 if (value == null) {
                     continue;
                 }
-                field.set(request, null);
                 result.put(field.getName(), value.toString());
             }
             return result;
         }
 
-        private Map<String, String> getAndRemovePathVariable(Object request, ModelMeta modelMeta) throws IllegalArgumentException,
+        private Map<String, String> getPathVariable(Object request, ModelMeta modelMeta) throws IllegalArgumentException,
                 IllegalAccessException {
             Map<String, String> result = new HashMap<>();
             List<Field> pathVariableFields = modelMeta.getPathVariableFields();
@@ -246,7 +254,6 @@ public class HttpClientInvocationHandler implements InvocationHandler {
                 if (value == null) {
                     continue;
                 }
-                field.set(request, null);
                 result.put(field.getName(), value.toString());
             }
             return result;

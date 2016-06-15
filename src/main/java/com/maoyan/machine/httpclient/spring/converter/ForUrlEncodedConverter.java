@@ -30,7 +30,7 @@ public class ForUrlEncodedConverter implements RequestEntityConverter {
     @Override
     public HttpEntity getEntity(Object object, Charset charset) throws Exception {
         List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
-        List<Field> allField = ReflectUtils.getAllField(object.getClass());
+        List<Field> allField = ReflectUtils.getEntityFields(object.getClass());
         for (Field field : allField) {
             field.setAccessible(true);
             Object value = field.get(object);

@@ -7,6 +7,7 @@ package api;
 
 import model.TestModel;
 
+import com.maoyan.machine.httpclient.spring.annotation.BaseUrl;
 import com.maoyan.machine.httpclient.spring.annotation.Interceptor;
 import com.maoyan.machine.httpclient.spring.annotation.Interceptors;
 
@@ -18,7 +19,7 @@ import com.maoyan.machine.httpclient.spring.annotation.Interceptors;
  * 
  * @version 1.0
  */
-//@BaseUrl("#{configProperties['baseUrl']}")
+@BaseUrl("#{configProperties['baseUrl']}")
 @Interceptor(order = 2, beanName = "interceptor")
 @Interceptors({ @Interceptor(order = 3, beanName = "interceptor"), @Interceptor(order = 4, beanName = "interceptor") })
 public interface TestApi {

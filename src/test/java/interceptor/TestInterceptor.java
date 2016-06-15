@@ -22,7 +22,7 @@ public class TestInterceptor implements HttpApiInterceptor {
      * TODO 在这里编写被覆盖方法的注释
      */
     @Override
-    public Object invoke(Invocation invocation) throws Throwable {
+    public Object invoke(Invocation invocation) throws Exception {
         System.err.println("===============before===============");
         Object proceed = invocation.proceed();
         System.err.println("===============after===============");

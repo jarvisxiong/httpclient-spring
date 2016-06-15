@@ -5,6 +5,7 @@
  */
 package com.maoyan.machine.httpclient.spring.interceptor;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -17,19 +18,34 @@ import java.util.List;
  */
 public abstract class Invocation {
     private List<HttpApiInterceptor> interceptorList;
+    protected Method method;
+    protected Object request;
     private int index = 0;
 
-    public Invocation(List<HttpApiInterceptor> interceptorList) {
+    public Invocation(List<HttpApiInterceptor> interceptorList, Method method, Object request) {
+        super();
         this.interceptorList = interceptorList;
+        this.method = method;
+        this.request = request;
     }
 
-    public Object proceed() throws Throwable {
+    public Object proceed() throws Exception {
         if (this.index == this.interceptorList.size()) {
             return this.invoke();
         }
         Object result = interceptorList.get(index++).invoke(this);
         return result;
     }
+    
+    
 
-    abstract protected Object invoke() throws Throwable;
+    public Method getMethod() {
+        return method;
+    }
+
+    public Object getRequest() {
+        return request;
+    }
+
+    abstract protected Object invoke() throws Exception;
 }

@@ -6,10 +6,13 @@
 package com.maoyan.machine.httpclient.spring.utils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.maoyan.machine.httpclient.spring.annotation.Header;
+import com.maoyan.machine.httpclient.spring.annotation.PathVariable;
 
 /**
  * TODO 在这里编写类的功能描述
@@ -22,22 +25,29 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ReflectUtils {
     private static final ConcurrentHashMap<Class<?>, List<Field>> fieldCache = new ConcurrentHashMap<>();
 
-    public static List<Field> getAllField(Class<?> clazz) {
-        List<Field> result = fieldCache.get(clazz);
-        if (result != null) {
+    public static List<Field> getEntityFields(Class<?> requestType) {
+        List<Field> result = fieldCache.get(requestType);
+        if(result != null) {
             return result;
         }
-
+        
         result = new ArrayList<>();
-        if (clazz == Object.class) {
-            return result;
+        Field[] declaredFields = requestType.getDeclaredFields();
+        for (Field field : declaredFields) {
+            if(Modifier.isStatic(field.getModifiers())
+                    || field.isAnnotationPresent(Header.class)
+                    || field.isAnnotationPresent(PathVariable.class)){
+                continue;
+            }
+            field.setAccessible(true);
+            result.add(field);
         }
-
-        Field[] declaredFields = clazz.getDeclaredFields();
-        result.addAll(Arrays.asList(declaredFields));
-        Class<?> superclass = clazz.getSuperclass();
-        result.addAll(getAllField(superclass));
-        fieldCache.put(clazz, result);
+        Class<?> superclass = requestType.getSuperclass();
+        if(superclass != Object.class){
+            result.addAll(getEntityFields(superclass));
+        }
+        
+        fieldCache.put(requestType, result);
         return result;
     }
 }

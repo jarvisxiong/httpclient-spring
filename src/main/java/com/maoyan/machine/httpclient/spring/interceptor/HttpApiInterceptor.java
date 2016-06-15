@@ -14,5 +14,5 @@ package com.maoyan.machine.httpclient.spring.interceptor;
  * @version 1.0
  */
 public interface HttpApiInterceptor {
-    Object invoke(Invocation invocation) throws Throwable;
+    Object invoke(Invocation invocation) throws Exception;
 }
