@@ -11,8 +11,8 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import com.maoyan.machine.httpclient.spring.meta.Charset;
-import com.maoyan.machine.httpclient.spring.meta.MimeType;
+import com.maoyan.machine.httpclient.spring.meta.Charsets;
+import com.maoyan.machine.httpclient.spring.meta.MimeTypes;
 
 /**
  * @author xujia06
@@ -24,7 +24,7 @@ import com.maoyan.machine.httpclient.spring.meta.MimeType;
 @Target({ ElementType.TYPE, ElementType.METHOD })
 public @interface Response {
 
-    String mimeType() default MimeType.JSON;
+    String mimeType() default MimeTypes.JSON;
 
-    String charset() default Charset.UTF_8;
+    String charset() default Charsets.UTF_8;
 }

@@ -13,7 +13,8 @@ package com.maoyan.machine.httpclient.spring.meta;
  * 
  * @version 1.0
  */
-public class MimeType {
-    public static final String FORM_Urlencoded = "application/x-www-form-urlencoded";
-    public static final String JSON = "application/json";
+public class Charsets {
+    public static final String UTF_8 = "UTF-8";
+    public static final String ASCII = "US-ASCII";
+    public static final String ISO_8859_1 = "ISO-8859-1";
 }

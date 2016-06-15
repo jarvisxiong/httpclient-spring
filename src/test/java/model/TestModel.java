@@ -8,8 +8,8 @@ package model;
 import com.maoyan.machine.httpclient.spring.annotation.PathVariable;
 import com.maoyan.machine.httpclient.spring.annotation.Request;
 import com.maoyan.machine.httpclient.spring.annotation.Response;
-import com.maoyan.machine.httpclient.spring.meta.Charset;
-import com.maoyan.machine.httpclient.spring.meta.MimeType;
+import com.maoyan.machine.httpclient.spring.meta.Charsets;
+import com.maoyan.machine.httpclient.spring.meta.MimeTypes;
 
 /**
  * @author xujia06
@@ -18,7 +18,7 @@ import com.maoyan.machine.httpclient.spring.meta.MimeType;
  * @version 1.0
  */
 public class TestModel {
-    @Request(method = "post", mimeType = MimeType.JSON, charset = Charset.UTF_8, path = "/api/{id}/test.json")
+    @Request(method = "post", mimeType = MimeTypes.JSON, charset = Charsets.UTF_8, path = "/api/{id}/test.json")
     public static class Req {
         @PathVariable
         private Integer id;
@@ -59,7 +59,7 @@ public class TestModel {
         }
     }
 
-    @Response(mimeType = MimeType.JSON)
+    @Response(mimeType = MimeTypes.JSON)
     public static class Resp {
         private String s;
         private Integer i;

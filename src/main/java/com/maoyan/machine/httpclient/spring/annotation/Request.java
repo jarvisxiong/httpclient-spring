@@ -11,8 +11,8 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import com.maoyan.machine.httpclient.spring.meta.Charset;
-import com.maoyan.machine.httpclient.spring.meta.MimeType;
+import com.maoyan.machine.httpclient.spring.meta.Charsets;
+import com.maoyan.machine.httpclient.spring.meta.MimeTypes;
 
 /**
  * @author xujia06
@@ -33,7 +33,7 @@ public @interface Request {
      */
     String method();
 
-    String mimeType() default MimeType.FORM_Urlencoded;
+    String mimeType() default MimeTypes.FORM_Urlencoded;
 
-    String charset() default Charset.UTF_8;
+    String charset() default Charsets.UTF_8;
 }

@@ -14,7 +14,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.maoyan.machine.httpclient.spring.meta.MimeType;
+import com.maoyan.machine.httpclient.spring.meta.MimeTypes;
 import com.maoyan.machine.httpclient.spring.utils.ReflectUtils;
 
 /**
@@ -46,7 +46,7 @@ public class ForUrlEncodedConverter implements RequestEntityConverter {
 
     @Override
     public String getMimeType() {
-        return MimeType.FORM_Urlencoded;
+        return MimeTypes.FORM_Urlencoded;
     }
 
 }

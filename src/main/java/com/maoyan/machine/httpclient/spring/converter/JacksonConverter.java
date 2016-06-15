@@ -16,7 +16,7 @@ import org.apache.http.util.EntityUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.maoyan.machine.httpclient.spring.meta.MimeType;
+import com.maoyan.machine.httpclient.spring.meta.MimeTypes;
 import com.maoyan.machine.httpclient.spring.utils.JackUtils;
 
 /**
@@ -49,7 +49,7 @@ public class JacksonConverter implements RequestEntityConverter, ResponseEntityC
 
     @Override
     public String getMimeType() {
-        return MimeType.JSON;
+        return MimeTypes.JSON;
     }
 
 }
