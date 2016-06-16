@@ -47,10 +47,10 @@ import com.maoyan.machine.httpclient.spring.utils.ReflectUtils;
  * @version 1.0
  */
 public class HttpClientInvocationHandler implements InvocationHandler {
-    private Map<String, RequestEntityConverter> requestEntityConverters = new HashMap<>();
-    private Map<String, ResponseEntityConverter> responseEntityConverts = new HashMap<>();
-    private HttpClient httpClient = null;
-    private MetasManager metasManager;
+    private final Map<String, RequestEntityConverter> requestEntityConverters;
+    private final Map<String, ResponseEntityConverter> responseEntityConverts;
+    private final HttpClient httpClient;
+    private final MetasManager metasManager;
 
     public HttpClientInvocationHandler(Map<String, RequestEntityConverter> requestEntityConverters,
             Map<String, ResponseEntityConverter> responseEntityConverts, HttpClient httpClient, MetasManager metasManager) {

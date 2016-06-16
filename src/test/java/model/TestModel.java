@@ -30,32 +30,36 @@ public class TestModel {
             return s;
         }
 
-        public void setS(String s) {
+        public Req setS(String s) {
             this.s = s;
+            return this;
         }
 
         public Integer getI() {
             return i;
         }
 
-        public void setI(Integer i) {
+        public Req setI(Integer i) {
             this.i = i;
+            return this;
         }
 
         public Long getL() {
             return l;
         }
 
-        public void setL(Long l) {
+        public Req setL(Long l) {
             this.l = l;
+            return this;
         }
 
         public Integer getId() {
             return id;
         }
 
-        public void setId(Integer id) {
+        public Req setId(Integer id) {
             this.id = id;
+            return this;
         }
     }
 
