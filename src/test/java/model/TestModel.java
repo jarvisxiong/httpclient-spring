@@ -75,45 +75,7 @@ public class TestModel {
     }
 
     @Response(mimeType = MimeTypes.JSON)
-    public static class Resp {
-        
-        private String s;
-        private Integer i;
-        private Long l;
-        @Header
-        private String header1;
-
-        public String getHeader1() {
-            return header1;
-        }
-
-        public void setHeader1(String header1) {
-            this.header1 = header1;
-        }
-
-        public String getS() {
-            return s;
-        }
-
-        public void setS(String s) {
-            this.s = s;
-        }
-
-        public Integer getI() {
-            return i;
-        }
-
-        public void setI(Integer i) {
-            this.i = i;
-        }
-
-        public Long getL() {
-            return l;
-        }
-
-        public void setL(Long l) {
-            this.l = l;
-        }
+    public static class Resp extends Req{
 
     }
 }
