@@ -19,6 +19,7 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -208,7 +209,11 @@ public class HttpClientInvocationHandler implements InvocationHandler {
         List<Field> headerFields = responseModelMeta.getHeaderFields();
         for (Field field : headerFields) {
             String headerName = field.getName();
-            String headerValue = httpResponse.getHeaders(headerName)[0].getValue();
+            Header[] headers = httpResponse.getHeaders(headerName);
+            if(headers == null || headers.length==0) {
+                continue;
+            }
+            String headerValue = headers[0].getValue();
             field.set(response, headerValue);
         }
 
