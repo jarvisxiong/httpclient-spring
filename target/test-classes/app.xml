@@ -9,7 +9,7 @@
                         http://machine.maoyan.com/schema/httpclient http://machine.maoyan.com/schema/httpclient.xsd
                         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd">
                         
-    <hc:http-api-scan package="api" socketTimeout="33" connectTimeout="33" maxTotalConnection="33" baseUrl="#{configProperties['baseUrl']}">
+    <hc:http-api-scan package="api" socketTimeout="30000000" connectTimeout="300000000" maxTotalConnection="33" baseUrl="#{configProperties['baseUrl']}">
     	<hc:entity-converters>
     		<hc:entity-converter>com.maoyan.machine.httpclient.spring.converter.JacksonConverter</hc:entity-converter>
     	</hc:entity-converters>

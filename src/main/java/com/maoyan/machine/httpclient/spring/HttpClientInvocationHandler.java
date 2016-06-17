@@ -28,6 +28,7 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.util.EntityUtils;
 
 import com.maoyan.machine.httpclient.spring.converter.RequestEntityConverter;
 import com.maoyan.machine.httpclient.spring.converter.ResponseEntityConverter;
@@ -120,7 +121,13 @@ public class HttpClientInvocationHandler implements InvocationHandler {
         StatusLine statusLine = response.getStatusLine();
         int code = statusLine.getStatusCode();
         if (code != 200) {
-            throw new RuntimeException(String.format("http请求出错，code：%s，原因：%s", code, statusLine.getReasonPhrase()));
+            String entityStr = "";
+            try {
+                entityStr = EntityUtils.toString(response.getEntity(),"UTF-8");
+            } catch (Exception e) {
+                e.printStackTrace();
+            } 
+            throw new RuntimeException(String.format("http请求出错，code：%s，原因：%s，entity：%s", code, statusLine.getReasonPhrase(), entityStr));
         }
     }
 

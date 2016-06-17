@@ -25,7 +25,7 @@ import com.maoyan.machine.httpclient.spring.utils.ReflectUtils;
  * 
  * @version 1.0
  */
-public class ForUrlEncodedConverter implements RequestEntityConverter {
+public class FormUrlEncodedConverter implements RequestEntityConverter {
 
     @Override
     public HttpEntity getEntity(Object object, Charset charset) throws Exception {

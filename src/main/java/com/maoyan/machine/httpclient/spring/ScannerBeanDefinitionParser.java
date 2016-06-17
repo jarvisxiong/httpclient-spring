@@ -20,7 +20,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.maoyan.machine.httpclient.spring.converter.ForUrlEncodedConverter;
+import com.maoyan.machine.httpclient.spring.converter.FormUrlEncodedConverter;
 import com.maoyan.machine.httpclient.spring.converter.JacksonConverter;
 import com.maoyan.machine.httpclient.spring.converter.RequestEntityConverter;
 import com.maoyan.machine.httpclient.spring.converter.ResponseEntityConverter;
@@ -113,7 +113,7 @@ public class ScannerBeanDefinitionParser implements BeanDefinitionParser {
         Map<String, RequestEntityConverter> result = new HashMap<>();
 
         // 添加默认converer
-        ForUrlEncodedConverter forUrlEncodedConverter = new ForUrlEncodedConverter();
+        FormUrlEncodedConverter forUrlEncodedConverter = new FormUrlEncodedConverter();
         result.put(forUrlEncodedConverter.getMimeType(), forUrlEncodedConverter);
         JacksonConverter jacksonConverter = new JacksonConverter();
         result.put(jacksonConverter.getMimeType(), jacksonConverter);

@@ -1,5 +1,7 @@
 package test;
 
+import java.net.InetSocketAddress;
+
 import javax.annotation.Resource;
 
 import model.TestModel;
@@ -8,6 +10,7 @@ import model.TestModel.Resp;
 
 import org.junit.Test;
 
+import server.SimpleHttpServer;
 import api.TestApi;
 
 public class ATest extends AbstractTest {
@@ -15,7 +18,12 @@ public class ATest extends AbstractTest {
     private TestApi testApi;
 
     @Test
-    public void test() {
+    public void test() throws Exception {
+        InetSocketAddress addr = new InetSocketAddress(8080);
+        SimpleHttpServer server = new SimpleHttpServer(addr);
+        server.start();
+        Thread.sleep(2*1000);
+        
         TestModel.Req req = new Req();
         req.setI(9);
         req.setL(2l);
