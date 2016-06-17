@@ -29,6 +29,7 @@ public class ATest extends AbstractTest {
         req.setL(2l);
         req.setS("你好");
         req.setId(2);
+        req.setHeader1("header");
         Resp test = testApi.test(req);
         Resp test2 = testApi.test(req);
         System.err.println(test.getS());

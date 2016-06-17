@@ -5,6 +5,7 @@
  */
 package model;
 
+import com.maoyan.machine.httpclient.spring.annotation.Header;
 import com.maoyan.machine.httpclient.spring.annotation.PathVariable;
 import com.maoyan.machine.httpclient.spring.annotation.Request;
 import com.maoyan.machine.httpclient.spring.annotation.Response;
@@ -25,6 +26,16 @@ public class TestModel {
         private String s;
         private Integer i;
         private Long l;
+        @Header
+        private String header1;
+
+        public String getHeader1() {
+            return header1;
+        }
+
+        public void setHeader1(String header1) {
+            this.header1 = header1;
+        }
 
         public String getS() {
             return s;
@@ -65,9 +76,20 @@ public class TestModel {
 
     @Response(mimeType = MimeTypes.JSON)
     public static class Resp {
+        
         private String s;
         private Integer i;
         private Long l;
+        @Header
+        private String header1;
+
+        public String getHeader1() {
+            return header1;
+        }
+
+        public void setHeader1(String header1) {
+            this.header1 = header1;
+        }
 
         public String getS() {
             return s;
