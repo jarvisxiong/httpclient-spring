@@ -29,6 +29,7 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
 
 import com.maoyan.machine.httpclient.spring.converter.RequestEntityConverter;
@@ -113,34 +114,32 @@ public class HttpClientInvocationHandler implements InvocationHandler {
         this.checkResponse(response);
         
         ModelMeta responseModelMeta = meta.getResponseModelMeta();
-        Type responseBodyType = responseModelMeta.getBodyType();
-        String responseMimeType = this.getResponseMimeType(response, meta);
-        ResponseEntityConverter responseConvert = responseEntityConverts.get(responseMimeType);
-        if(responseConvert == null) {
-            throw new RuntimeException(String.format("找不到ResponseEntityConverter，mime type：", responseMimeType));
+        Object result;
+        HttpEntity entity = response.getEntity();
+        if(entity != null) {
+            Type responseBodyType = responseModelMeta.getBodyType();
+            String responseMimeType = this.getResponseMimeType(entity, meta);
+            ResponseEntityConverter responseConvert = responseEntityConverts.get(responseMimeType);
+            if(responseConvert == null) {
+                throw new RuntimeException(String.format("找不到ResponseEntityConverter，mime type：", responseMimeType));
+            }
+            result = responseConvert.convert(response.getEntity(), responseBodyType, Charset.forName(meta.getResponseCharset()));
+        }else {
+            result = meta.getResponseType().newInstance();
         }
-        Object result = responseConvert.convert(response.getEntity(), responseBodyType, Charset.forName(meta.getResponseCharset()));
+        
         this.loadResponseHeaders(result, response, responseModelMeta);
 
         return result;
     }
     
-    private String getResponseMimeType(HttpResponse response, HttpApiMeta meta) {
+    private String getResponseMimeType(HttpEntity entity, HttpApiMeta meta) {
         String responseMimeType = meta.getResponseMimeType();//优先使用用户指定的mime type
         if(!"".equals(responseMimeType)) {
             return responseMimeType;
         }
-        Header[] headers = response.getHeaders("Content-Type");
-        if(headers == null || headers.length == 0 ){
-            StringBuilder sb = new StringBuilder();
-            Header[] allHeaders = response.getAllHeaders();
-            for (Header header : allHeaders) {
-                sb.append(header.getName()).append(header.getValue()).append(",");
-            }
-            sb.setLength(sb.length() - 1);
-            throw new RuntimeException(String.format("不能确定ResponseMimeType, reponse headers:", sb.toString()));
-        }
-        return headers[0].getValue().split(";")[0];
+        ContentType contentType = ContentType.get(entity);
+        return contentType.getMimeType();
     }
 
     private void checkResponse(HttpResponse response) {
