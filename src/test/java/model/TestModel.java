@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.util.Date;
+
 import com.maoyan.machine.httpclient.spring.annotation.Header;
 import com.maoyan.machine.httpclient.spring.annotation.PathVariable;
 import com.maoyan.machine.httpclient.spring.annotation.Request;
@@ -19,18 +21,27 @@ import com.maoyan.machine.httpclient.spring.meta.MimeTypes;
  * @version 1.0
  */
 public class TestModel {
-    @Request(method = "post", mimeType = MimeTypes.JSON, charset = Charsets.UTF_8, path = "/api/{id}/test.json")
+    @Request(method = "post", mimeType = MimeTypes.JSON, charset = Charsets.UTF_8, path = "/api/{id}")
     public static class Req {
         @PathVariable
         private Integer id;
         private String s;
         private Integer i;
         private Long l;
+        private Date d;
         @Header
         private String header1;
 
         public String getHeader1() {
             return header1;
+        }
+        
+        public Date getD() {
+            return d;
+        }
+
+        public void setD(Date d) {
+            this.d = d;
         }
 
         public void setHeader1(String header1) {

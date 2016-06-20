@@ -1,6 +1,7 @@
 package test;
 
 import java.net.InetSocketAddress;
+import java.util.Date;
 
 import javax.annotation.Resource;
 
@@ -30,8 +31,10 @@ public class ATest extends AbstractTest {
         req.setS("你好");
         req.setId(2);
         req.setHeader1("aheader");
+        req.setD(new Date());
         Resp test = testApi.test(req);
         Resp test2 = testApi.test(req);
         System.err.println(test.getS());
+        server.shutDown();
     }
 }

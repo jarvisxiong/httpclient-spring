@@ -1,6 +1,7 @@
 package com.maoyan.machine.httpclient.spring.utils;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -28,6 +29,8 @@ public class JackUtils {
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             mapper.setLocale(Locale.CHINA);
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+            mapper.setDateFormat(fmt);  
         }
         return mapper;
     }

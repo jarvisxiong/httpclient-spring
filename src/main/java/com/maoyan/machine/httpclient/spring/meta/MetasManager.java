@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.config.BeanExpressionContext;
 import org.springframework.beans.factory.config.BeanExpressionResolver;
@@ -38,7 +38,7 @@ import com.maoyan.machine.httpclient.spring.interceptor.HttpApiInterceptor;
  * @version 1.0
  */
 public class MetasManager {
-    private final ConcurrentHashMap<Method, HttpApiMeta> apiMetasCache = new ConcurrentHashMap<Method, HttpApiMeta>();
+    private final HashMap<Method, HttpApiMeta> apiMetasCache = new HashMap<Method, HttpApiMeta>();
 
     public MetasManager(Class<?> interfaceClass, ApplicationContext applicationContext, List<InterceptorInfo> globleInterceptors, String globleBaseUrl) {
         ClassMeta classMeta = this.parseClassMeta(interfaceClass, applicationContext, globleBaseUrl);

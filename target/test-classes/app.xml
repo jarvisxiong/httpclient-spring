@@ -18,7 +18,7 @@
     	</hc:interceptors>
     </hc:http-api-scan>
     
-    <bean id="interceptor" class="interceptor.TestInterceptor"/>
+    <bean id="interceptor" class="interceptor.LogInterceptor"/>
     
     <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="locations">
