@@ -74,7 +74,7 @@ public class TestModel {
         }
     }
 
-    @Response(mimeType = MimeTypes.JSON)
+    @Response
     public static class Resp extends Req{
 
     }

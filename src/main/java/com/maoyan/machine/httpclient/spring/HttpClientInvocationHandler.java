@@ -96,6 +96,9 @@ public class HttpClientInvocationHandler implements InvocationHandler {
             response = this.doDelete(url, headers, this.getQueryString(body));
         } else {
             RequestEntityConverter requestConverter = requestEntityConverters.get(meta.getRequestMimeType());
+            if(requestConverter == null){
+                throw new RuntimeException(String.format("找不到RequestEntityConverter，mime type：", meta.getRequestMimeType()));
+            }
             HttpEntity entity = requestConverter.getEntity(body, Charset.forName(meta.getRequestCharset()));
             String contentType = meta.getRequestMimeType() + ";charset=" + meta.getRequestCharset();
             if (httpMehtod.equalsIgnoreCase("POST")) {
@@ -108,14 +111,36 @@ public class HttpClientInvocationHandler implements InvocationHandler {
         }
 
         this.checkResponse(response);
-
+        
         ModelMeta responseModelMeta = meta.getResponseModelMeta();
         Type responseBodyType = responseModelMeta.getBodyType();
-        ResponseEntityConverter responseConvert = responseEntityConverts.get(meta.getResponseMimeType());
+        String responseMimeType = this.getResponseMimeType(response, meta);
+        ResponseEntityConverter responseConvert = responseEntityConverts.get(responseMimeType);
+        if(responseConvert == null) {
+            throw new RuntimeException(String.format("找不到ResponseEntityConverter，mime type：", responseMimeType));
+        }
         Object result = responseConvert.convert(response.getEntity(), responseBodyType, Charset.forName(meta.getResponseCharset()));
         this.loadResponseHeaders(result, response, responseModelMeta);
 
         return result;
+    }
+    
+    private String getResponseMimeType(HttpResponse response, HttpApiMeta meta) {
+        String responseMimeType = meta.getResponseMimeType();//优先使用用户指定的mime type
+        if(!"".equals(responseMimeType)) {
+            return responseMimeType;
+        }
+        Header[] headers = response.getHeaders("Content-Type");
+        if(headers == null || headers.length == 0 ){
+            StringBuilder sb = new StringBuilder();
+            Header[] allHeaders = response.getAllHeaders();
+            for (Header header : allHeaders) {
+                sb.append(header.getName()).append(header.getValue()).append(",");
+            }
+            sb.setLength(sb.length() - 1);
+            throw new RuntimeException(String.format("不能确定ResponseMimeType, reponse headers:", sb.toString()));
+        }
+        return headers[0].getValue().split(";")[0];
     }
 
     private void checkResponse(HttpResponse response) {
