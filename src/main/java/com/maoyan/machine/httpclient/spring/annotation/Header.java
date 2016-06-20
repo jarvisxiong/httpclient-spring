@@ -12,7 +12,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * 标记实体字段为http header
+ * 当标记在请求实体字段上时，该字段值将被添加到请求头中，请求头名为字段名。
+ * 当标记在响应体的字段上时，该字段将被赋予响应中同名响应头的值。
  * 
  * @author xujia06
  * @created 2016年6月6日

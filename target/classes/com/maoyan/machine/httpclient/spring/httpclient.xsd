@@ -6,7 +6,7 @@
 
   <xsd:element name="http-api-scan">
     <xsd:complexType>
-    	<xsd:sequence>
+    	<xsd:all>
       		<xsd:element name="entity-converters" minOccurs="0" maxOccurs="1">
       			<xsd:complexType>
       				<xsd:sequence>
@@ -26,7 +26,7 @@
       				</xsd:sequence>
       			</xsd:complexType>
       		</xsd:element>
-    	</xsd:sequence>
+    	</xsd:all>
       	<xsd:attribute name="package" type="xsd:string"
        		 use="required">
       	</xsd:attribute>

@@ -12,7 +12,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * TODO 在这里编写类的功能描述
+ * 配置在接口类上，用来指定http调用的Base URL,http请求的最终url=BaseUrl + path
  * 
  * @author xujia06
  * @created 2016年6月6日

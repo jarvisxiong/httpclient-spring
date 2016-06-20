@@ -12,7 +12,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * TODO 在这里编写类的功能描述
+ * 标记请求实体字段为PathVariable
  * 
  * @author xujia06
  * @created 2016年6月12日

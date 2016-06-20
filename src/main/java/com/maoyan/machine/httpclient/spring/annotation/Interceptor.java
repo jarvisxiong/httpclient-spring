@@ -9,9 +9,6 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 @Target({ ElementType.METHOD, ElementType.TYPE })
 public @interface Interceptor {
-    Class<?> interceptorClass() default Object.class;
-
     String beanName() default "";
-
     int order();
 }

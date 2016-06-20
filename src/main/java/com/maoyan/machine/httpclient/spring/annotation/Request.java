@@ -15,6 +15,8 @@ import com.maoyan.machine.httpclient.spring.meta.Charsets;
 import com.maoyan.machine.httpclient.spring.meta.MimeTypes;
 
 /**
+ * 用于定义http请求，可配置在请求的实体类上或接口方法上，接口方法上的优先级更高。
+ * 
  * @author xujia06
  * @created 2016年6月6日
  * 
@@ -29,11 +31,17 @@ public @interface Request {
     String path();
 
     /**
-     * 请求方法
+     * 请求方法，当前支持GET、POST、PUT、DELETE
      */
     String method();
 
+    /**
+     * 请求体类型，方法是GET和Delete是不起作用
+     */
     String mimeType() default MimeTypes.FORM_Urlencoded;
 
+    /**
+     * 请求体使用的字符集，方法是GET和Delete是不起作用
+     */
     String charset() default Charsets.UTF_8;
 }
