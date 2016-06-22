@@ -93,7 +93,7 @@ public class MetasManager {
     private ModelMeta parseModelMeatas(Class<?> modelType) {
         ModelMeta result = new ModelMeta();
         List<Field> headerFields = getAnnotatedFields(modelType, Header.class);
-        result.setHeaderFields(headerFields);
+        result.setHeaderFields(this.getHeaderFieldInfo(headerFields));
         List<Field> pathVariableFields = getAnnotatedFields(modelType, PathVariable.class);
         result.setPathVariableFields(pathVariableFields);
         List<Field> bodyFieds = getAnnotatedFields(modelType, Entity.class);
@@ -108,6 +108,20 @@ public class MetasManager {
 
         return result;
     }
+    
+    private List<HeaderFieldInfo> getHeaderFieldInfo(List<Field> headerFields) {
+        List<HeaderFieldInfo> result = new ArrayList<>();
+        for (Field field : headerFields) {
+            Header headerAnno = field.getAnnotation(Header.class);
+            String headerName = headerAnno.value();
+            if("".equals(headerName)) {
+                headerName = field.getName();
+            }
+            result.add(new HeaderFieldInfo(field, headerName));
+        }
+        return result;
+    }
+    
 
     public HttpApiMeta getApiMeta(Method method) {
         return apiMetasCache.get(method);

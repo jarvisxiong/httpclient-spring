@@ -16,16 +16,16 @@ import java.util.List;
  * @version 1.0
  */
 public class ModelMeta {
-    private List<Field> headerFields;
+    private List<HeaderFieldInfo> headerFields;
     private List<Field> pathVariableFields;
     private Field bodyField;
     private Type bodyType;
 
-    public List<Field> getHeaderFields() {
+    public List<HeaderFieldInfo> getHeaderFields() {
         return headerFields;
     }
 
-    public void setHeaderFields(List<Field> headerFields) {
+    public void setHeaderFields(List<HeaderFieldInfo> headerFields) {
         this.headerFields = headerFields;
     }
 

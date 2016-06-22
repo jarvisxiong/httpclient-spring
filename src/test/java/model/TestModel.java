@@ -29,7 +29,7 @@ public class TestModel {
         private Integer i;
         private Long l;
         private Date d;
-        @Header
+        @Header("HEADER")
         private String header1;
 
         public String getHeader1() {

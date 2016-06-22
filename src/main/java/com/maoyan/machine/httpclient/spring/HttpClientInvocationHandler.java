@@ -36,6 +36,7 @@ import com.maoyan.machine.httpclient.spring.converter.RequestEntityConverter;
 import com.maoyan.machine.httpclient.spring.converter.ResponseEntityConverter;
 import com.maoyan.machine.httpclient.spring.interceptor.HttpApiInterceptor;
 import com.maoyan.machine.httpclient.spring.interceptor.Invocation;
+import com.maoyan.machine.httpclient.spring.meta.HeaderFieldInfo;
 import com.maoyan.machine.httpclient.spring.meta.HttpApiMeta;
 import com.maoyan.machine.httpclient.spring.meta.MetasManager;
 import com.maoyan.machine.httpclient.spring.meta.ModelMeta;
@@ -230,15 +231,15 @@ public class HttpClientInvocationHandler implements InvocationHandler {
 
     private void loadResponseHeaders(Object response, HttpResponse httpResponse, ModelMeta responseModelMeta) throws IllegalArgumentException,
             IllegalAccessException {
-        List<Field> headerFields = responseModelMeta.getHeaderFields();
-        for (Field field : headerFields) {
-            String headerName = field.getName();
+        List<HeaderFieldInfo> headerFields = responseModelMeta.getHeaderFields();
+        for (HeaderFieldInfo headerFieldInfo : headerFields) {
+            String headerName = headerFieldInfo.getHeaderName();
             Header[] headers = httpResponse.getHeaders(headerName);
             if(headers == null || headers.length==0) {
                 continue;
             }
             String headerValue = headers[0].getValue();
-            field.set(response, headerValue);
+            headerFieldInfo.getField().set(response, headerValue);
         }
 
     }
@@ -270,13 +271,13 @@ public class HttpClientInvocationHandler implements InvocationHandler {
 
         private Map<String, String> getHead(Object request, ModelMeta modelMeta) throws IllegalArgumentException, IllegalAccessException {
             Map<String, String> result = new HashMap<>();
-            List<Field> headerFields = modelMeta.getHeaderFields();
-            for (Field field : headerFields) {
-                Object value = field.get(request);
+            List<HeaderFieldInfo> headerFields = modelMeta.getHeaderFields();
+            for (HeaderFieldInfo headerFieldInfo : headerFields) {
+                Object value = headerFieldInfo.getField().get(request);
                 if (value == null) {
                     continue;
                 }
-                result.put(field.getName(), value.toString());
+                result.put(headerFieldInfo.getHeaderName(), value.toString());
             }
             return result;
         }

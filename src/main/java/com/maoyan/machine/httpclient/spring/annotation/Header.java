@@ -23,4 +23,8 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 @Target({ ElementType.FIELD })
 public @interface Header {
+    /**
+     * Header名，如果不指定则使用被注解的字段名
+     */
+    String value() default "";
 }
