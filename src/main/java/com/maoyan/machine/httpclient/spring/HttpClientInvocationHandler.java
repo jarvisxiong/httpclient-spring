@@ -146,7 +146,7 @@ public class HttpClientInvocationHandler implements InvocationHandler {
     private void checkResponse(HttpResponse response) {
         StatusLine statusLine = response.getStatusLine();
         int code = statusLine.getStatusCode();
-        if (code != 200) {
+        if (code < 200 || code >=300) {
             String entityStr = "";
             try {
                 entityStr = EntityUtils.toString(response.getEntity(),"UTF-8");
