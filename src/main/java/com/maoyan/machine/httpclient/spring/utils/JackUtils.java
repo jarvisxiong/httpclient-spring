@@ -31,6 +31,7 @@ public class JackUtils {
             mapper.setLocale(Locale.CHINA);
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
             mapper.setDateFormat(fmt);  
+            mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         }
         return mapper;
     }
