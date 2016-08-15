@@ -16,16 +16,8 @@ import java.util.List;
  * @version 1.0
  */
 public class ClassMeta {
-    private String baseUrl;
+    private Object baseUrl;
     private List<InterceptorInfo> interceptors;
-
-    public String getBaseUrl() {
-        return baseUrl;
-    }
-
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
 
     public List<InterceptorInfo> getInterceptors() {
         return interceptors;
@@ -33,5 +25,13 @@ public class ClassMeta {
 
     public void setInterceptors(List<InterceptorInfo> interceptors) {
         this.interceptors = interceptors;
+    }
+
+    public Object getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(Object baseUrl) {
+        this.baseUrl = baseUrl;
     }
 }

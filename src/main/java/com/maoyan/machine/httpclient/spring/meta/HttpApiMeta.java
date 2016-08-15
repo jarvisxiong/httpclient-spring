@@ -18,7 +18,8 @@ import com.maoyan.machine.httpclient.spring.interceptor.HttpApiInterceptor;
  * @version 1.0
  */
 public class HttpApiMeta {
-    private String url;
+    private Object baseUrl;
+    private String path;
     private String method;
     private String requestMimeType;
     private String responseMimeType;
@@ -78,14 +79,6 @@ public class HttpApiMeta {
         this.responseModelMeta = responseModelMeta;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public String getRequestMimeType() {
         return requestMimeType;
     }
@@ -116,5 +109,21 @@ public class HttpApiMeta {
 
     public void setResponseCharset(String responseCharset) {
         this.responseCharset = responseCharset;
+    }
+
+    public Object getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(Object baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

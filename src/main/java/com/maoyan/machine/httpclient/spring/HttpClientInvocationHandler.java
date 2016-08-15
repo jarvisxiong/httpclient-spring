@@ -36,6 +36,7 @@ import com.maoyan.machine.httpclient.spring.converter.RequestEntityConverter;
 import com.maoyan.machine.httpclient.spring.converter.ResponseEntityConverter;
 import com.maoyan.machine.httpclient.spring.interceptor.HttpApiInterceptor;
 import com.maoyan.machine.httpclient.spring.interceptor.Invocation;
+import com.maoyan.machine.httpclient.spring.meta.DynamicBaseUrl;
 import com.maoyan.machine.httpclient.spring.meta.HeaderFieldInfo;
 import com.maoyan.machine.httpclient.spring.meta.HttpApiMeta;
 import com.maoyan.machine.httpclient.spring.meta.MetasManager;
@@ -89,7 +90,14 @@ public class HttpClientInvocationHandler implements InvocationHandler {
         Object body = requestParser.getBody();
 
         HttpResponse response;
-        String url = meta.getUrl();
+        String url;
+        Object baseUrl = meta.getBaseUrl();
+        if(baseUrl instanceof String) {
+            url = ((String)baseUrl) + meta.getPath();
+        }else {
+            url = ((DynamicBaseUrl)baseUrl).getBaseUrl() + meta.getPath();
+        }
+        
         url = addPathVariablesToUrl(url, pathVariables);
         String httpMehtod = meta.getMethod();
         if (httpMehtod.equalsIgnoreCase("GET")) {

@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package api;
+package api.i;
 
 import model.TestModel;
 
@@ -17,7 +17,7 @@ import com.maoyan.machine.httpclient.spring.annotation.BaseUrl;
  * 
  * @version 1.0
  */
-@BaseUrl("#{configProperties['baseUrl']}")
+@BaseUrl("#{configBean}")
 public interface TestApi {
 //    @Interceptor(order = 2, beanName = "interceptor")
     TestModel.Resp test(TestModel.Req req);

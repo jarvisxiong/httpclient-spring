@@ -12,7 +12,7 @@ import model.TestModel.Resp;
 import org.junit.Test;
 
 import server.SimpleHttpServer;
-import api.TestApi;
+import api.i.TestApi;
 
 public class ATest extends AbstractTest {
     @Resource
@@ -34,6 +34,7 @@ public class ATest extends AbstractTest {
         req.setD(new Date());
         Resp test = testApi.test(req);
         System.err.println(test.getS());
+        Resp test2 = testApi.test(req);
         server.shutDown();
     }
 }

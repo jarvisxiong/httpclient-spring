@@ -60,8 +60,11 @@ public class MetasManager {
         if (baseUrl == null || baseUrl.equals("")) {
             throw new RuntimeException("没有指定baseUrl");
         }
-        baseUrl = (String) getSpELValue(baseUrl, applicationContext);
-        classMeta.setBaseUrl(baseUrl);
+        Object spELValue = getSpELValue(baseUrl, applicationContext);
+        if(!(spELValue instanceof String) && !(spELValue instanceof DynamicBaseUrl)) {
+            throw new RuntimeException("baseUrl 的spEL表达式的计算结果必须是String类型或者实现了DynamicBaseUrl接口的bean");
+        }
+        classMeta.setBaseUrl(spELValue);
 
         List<Interceptor> interceptorAnnoList = new ArrayList<>();
         Interceptor interceptorAnno = interfaceClass.getAnnotation(Interceptor.class);
@@ -174,7 +177,8 @@ public class MetasManager {
             HttpApiMeta result = new HttpApiMeta();
             result.setRequestType(this.requestType);
             result.setResponseType(this.responseType);
-            result.setUrl(this.getUrl());
+            result.setBaseUrl(classMeta.getBaseUrl());
+            result.setPath(request.path());
             result.setMethod(this.request.method());
             result.setRequestMimeType(this.getRequestMimeType());
             result.setRequestCharset(this.request.charset());
@@ -207,10 +211,6 @@ public class MetasManager {
             if (this.response == null) {
                 throw new RuntimeException(String.format("没有找到@Response配置信息，method：%s", this.method.toString()));
             }
-        }
-
-        private String getUrl() {
-            return this.classMeta.getBaseUrl() + request.path();
         }
 
         private List<HttpApiInterceptor> getInterceptors() {
