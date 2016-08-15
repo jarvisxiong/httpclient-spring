@@ -68,7 +68,7 @@ public class HttpClientInvocationHandler implements InvocationHandler {
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Exception {
         List<HttpApiInterceptor> interceptors = metasManager.getApiMeta(method).getInterceptors();
         if (interceptors == null || interceptors.size() == 0) {
-            return this.invoke0(proxy, method, args);
+            return this.invoke0(proxy, method, args[0]);
         }
 
         return new Invocation(interceptors, method, args[0]) {
