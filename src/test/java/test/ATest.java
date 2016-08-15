@@ -34,7 +34,6 @@ public class ATest extends AbstractTest {
         req.setD(new Date());
         Resp test = testApi.test(req);
         System.err.println(test.getS());
-        Resp test2 = testApi.test(req);
         server.shutDown();
     }
 }
