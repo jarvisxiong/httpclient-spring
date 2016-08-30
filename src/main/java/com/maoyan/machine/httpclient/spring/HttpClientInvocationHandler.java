@@ -11,6 +11,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
@@ -101,9 +102,9 @@ public class HttpClientInvocationHandler implements InvocationHandler {
         url = addPathVariablesToUrl(url, pathVariables);
         String httpMehtod = meta.getMethod();
         if (httpMehtod.equalsIgnoreCase("GET")) {
-            response = this.doGet(url, headers, this.getQueryString(body));
+            response = this.doGet(url, headers, this.getQueryString(body, meta.getRequestCharset()));
         } else if (httpMehtod.equalsIgnoreCase("DELETE")) {
-            response = this.doDelete(url, headers, this.getQueryString(body));
+            response = this.doDelete(url, headers, this.getQueryString(body, meta.getRequestCharset()));
         } else {
             RequestEntityConverter requestConverter = requestEntityConverters.get(meta.getRequestMimeType());
             if(requestConverter == null){
@@ -165,7 +166,7 @@ public class HttpClientInvocationHandler implements InvocationHandler {
         }
     }
 
-    private String getQueryString(Object requestModel) throws IllegalArgumentException, IllegalAccessException, UnsupportedEncodingException {
+    private String getQueryString(Object requestModel, String charset) throws IllegalArgumentException, IllegalAccessException, UnsupportedEncodingException {
         List<Field> allField = ReflectUtils.getEntityFields(requestModel.getClass());
         StringBuilder sbBuilder = new StringBuilder();
         sbBuilder.append("?");
@@ -179,7 +180,7 @@ public class HttpClientInvocationHandler implements InvocationHandler {
         }
 
         sbBuilder.setLength(sbBuilder.length() - 1);
-        return sbBuilder.toString();
+        return URLEncoder.encode(sbBuilder.toString(), charset);
     }
 
     private static String addPathVariablesToUrl(String url, Map<String, String> pathVariables) {
