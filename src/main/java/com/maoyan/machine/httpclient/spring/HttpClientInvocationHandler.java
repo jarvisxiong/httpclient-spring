@@ -176,11 +176,11 @@ public class HttpClientInvocationHandler implements InvocationHandler {
             if (value == null) {
                 continue;
             }
-            sbBuilder.append(field.getName()).append("=").append(value).append("&");
+            sbBuilder.append(field.getName()).append("=").append(URLEncoder.encode(String.valueOf(value), charset)).append("&");
         }
 
         sbBuilder.setLength(sbBuilder.length() - 1);
-        return URLEncoder.encode(sbBuilder.toString(), charset);
+        return sbBuilder.toString();
     }
 
     private static String addPathVariablesToUrl(String url, Map<String, String> pathVariables) {
