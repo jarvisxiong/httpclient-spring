@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+                        
+    <bean id="testApi" class="com.maoyan.machine.httpclient.spring.proxy.MTraceHttpClientProxy">
+        <property name="serviceInterface" value="api.i.TestApi" />
+        <property name="baseUrl" value="#{configProperties['baseUrl']}"/>
+        <property name="socketTimeout" value="3000" />
+        <property name="connectTimeout" value="3000" />
+        <property name="maxTotalConnection" value="100" />
+        <property name="defaultMaxPerRoute" value="100" />
+        
+        <property name="appKey" value="asdfadsf" />
+        
+        <property name="interceptors">
+        	<list>
+				<ref bean="interceptor" />
+				<ref bean="interceptor"/>
+			</list>
+        </property>
+    </bean>
+    
+    <bean id="interceptor" class="interceptor.LogInterceptor"/>
+    <bean id="configBean" class="config.ConfigBean"/>
+    
+    <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>classpath:config.properties</value>
+            </list>
+        </property>
+    </bean>
+</beans>

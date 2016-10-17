@@ -5,6 +5,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:app.xml")
+@ContextConfiguration(locations = "classpath:appV2.0_mtrace.xml")
 public abstract class AbstractTest {
 }
