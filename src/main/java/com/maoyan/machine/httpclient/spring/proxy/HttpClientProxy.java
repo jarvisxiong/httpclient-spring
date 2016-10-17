@@ -8,10 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
@@ -38,6 +34,12 @@ public class HttpClientProxy<T> implements FactoryBean<T>, ApplicationContextAwa
     protected int maxTotalConnection = 100;
     protected int defaultMaxPerRoute = 100;
     protected int connectTimeout = 3000;
+    protected boolean trace = false;
+    private String appKey;
+    
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
+    }
 
     public void setInterceptors(List<HttpApiInterceptor> interceptors) {
         this.interceptors = interceptors;
@@ -75,6 +77,10 @@ public class HttpClientProxy<T> implements FactoryBean<T>, ApplicationContextAwa
         this.interceptors = interceptors;
     }
 
+    public void setTrace(boolean trace) {
+        this.trace = trace;
+    }
+
     @SuppressWarnings("unchecked")
     public T getObject() throws Exception {
         MetasManager metasManager = new MetasManager(this.serviceInterface, applicationContext, new ArrayList<InterceptorInfo>(0), this.baseUrl);
@@ -88,23 +94,24 @@ public class HttpClientProxy<T> implements FactoryBean<T>, ApplicationContextAwa
         if(this.httpClient == null) {
             this.httpClient = this.createHttpClient();
         }
+        
         HttpClientInvocationHandler handler = new HttpClientInvocationHandler(this.getRequestEntityConverters(), this.getResponseEntityConverter(), httpClient,
                 metasManager);
-
+        
         Object newProxyInstance = Proxy.newProxyInstance(serviceInterface.getClassLoader(), new Class[] { serviceInterface }, handler);
         return (T) newProxyInstance;
     }
     
-    protected HttpClient createHttpClient() {
-        PoolingHttpClientConnectionManager httpConnectionPool = new PoolingHttpClientConnectionManager();
-        httpConnectionPool.setMaxTotal(this.maxTotalConnection);
-        httpConnectionPool.setDefaultMaxPerRoute(this.defaultMaxPerRoute);
-        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(this.socketTimeout)
-                .setConnectTimeout(this.connectTimeout).build();
-        CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(httpConnectionPool).setDefaultRequestConfig(requestConfig).build();
+    protected HttpClient createHttpClient() throws Exception {
+        HttpClientFactoryBean fb = new HttpClientFactoryBean();
+        fb.setAppKey(this.appKey);
+        fb.setConnectTimeout(this.connectTimeout);
+        fb.setDefaultMaxPerRoute(this.defaultMaxPerRoute);
+        fb.setMaxTotalConnection(this.maxTotalConnection);
+        fb.setSocketTimeout(this.socketTimeout);
+        fb.setTrace(this.trace);
         
-        
-        return httpClient;
+        return fb.getObject();
     }
 
     /**

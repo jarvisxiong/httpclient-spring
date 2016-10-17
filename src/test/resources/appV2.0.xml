@@ -9,6 +9,8 @@
         <property name="connectTimeout" value="3000" />
         <property name="maxTotalConnection" value="100" />
         <property name="defaultMaxPerRoute" value="100" />
+        <property name="trace" value="false" />
+        <property name="appKey" value="asdfasdfasdf" />
         <property name="interceptors">
         	<list>
 				<ref bean="interceptor" />
